@@ -33,6 +33,7 @@
     // KEYS
     var keyPressed, keyReleased;
     const KEY_UP_Z = 90, KEY_LEFT_Q = 81, KEY_DOWN_S = 83, KEY_RIGHT_D = 68;
+    var keyHeld_Gas = false; var keyHeld_Reverse = false; var keyHeld_TurnLeft = false; var keyHeld_TurnRight = false;
 
     window.onload = function()
     {
@@ -87,22 +88,34 @@
     function keyPressed(evt) {
         document.getElementById("debugText").innerHTML = "KeyCode pushed: " + evt.keyCode;
         if (evt.keyCode === KEY_UP_Z) {
-            carSpeed += 1.5;
+            keyHeld_Gas = true;
         }
         if (evt.keyCode === KEY_DOWN_S) {
-            carSpeed -= 1.5;
+            keyHeld_Reverse = true;
         }
         if (evt.keyCode === KEY_LEFT_Q) {
-            carAng -= 0.25 * Math.PI;
+            keyHeld_TurnLeft = true;
         }
         if (evt.keyCode === KEY_RIGHT_D) {
-            carAng += 0.25 * Math.PI;
+            keyHeld_TurnRight = true;
         }
         evt.preventDefault(); // Empêche la page du navigateur de réagir aux input (éviter le scrolling par exemple).
     }
 
     function keyReleased(evt) {
         document.getElementById("debugText").innerHTML = "KeyCode released: " + evt.keyCode;
+        if (evt.keyCode === KEY_UP_Z) {
+            keyHeld_Gas = false;
+        }
+        if (evt.keyCode === KEY_DOWN_S) {
+            keyHeld_Reverse = false;
+        }
+        if (evt.keyCode === KEY_LEFT_Q) {
+            keyHeld_TurnLeft = false;
+        }
+        if (evt.keyCode === KEY_RIGHT_D) {
+            keyHeld_TurnRight = false;
+        }
     }
     // TRACK //
     // TRACK.BRICK //
@@ -119,6 +132,19 @@
     }
     // MOVE //
     function moveCar() {
+        if (keyHeld_Gas) {
+            carSpeed += 0.1;
+        }
+        if (keyHeld_Reverse) {
+            carSpeed -= 0.2;
+        }
+        if (keyHeld_TurnLeft) {
+            carAng += -0.03 * Math.PI;
+        }
+        if (keyHeld_TurnRight) {
+            carAng += 0.03 * Math.PI;
+        }
+
         carX += Math.cos(carAng) * carSpeed;
         carY += Math.sin(carAng) * carSpeed;
     }
