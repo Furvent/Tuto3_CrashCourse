@@ -1,7 +1,7 @@
 /**
  * Created by Furvent on 18/04/2017.
  */
-var picsToLoad = 3;
+var picsToLoad = 0;
 
 var carPic;
 var trackPicRoad;
@@ -9,6 +9,7 @@ var trackPicWall;
 
 function countLoadedImageAndLaunchIfReady() {
     picsToLoad--;
+    console.log(picsToLoad);
     if (picsToLoad <= 0) {
         loadingDoneSoStartGame();
     }
@@ -31,9 +32,16 @@ function beginLoadingImage(imgVar, fileName) {
 }*/
 
 function loadImages() {
- beginLoadingImage(carPic, "car_red.png");
- beginLoadingImage(trackPicWall, "wall.png");
- beginLoadingImage(trackPicRoad, "road.png");
+    var imageList = [
+        {varName: carPic, theFile: "car_red.png"},
+        {varName: trackPicRoad, theFile: "road.png"},
+        {varName: trackPicWall, theFile: "wall.png"}
+    ];
+
+    picsToLoad = imageList.length;
+    for (var i = 0; i < imageList.length; i++) {
+        beginLoadingImage(imageList[i].varName, imageList[i].theFile);
+    }
  }
 
  function beginLoadingImage(imgVar, fileName) {

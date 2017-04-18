@@ -12,7 +12,6 @@ window.onload = function()
     initCar();
     initGraphics();
     initInput();
-    loadImages();
 };
 
 function loadingDoneSoStartGame() {
