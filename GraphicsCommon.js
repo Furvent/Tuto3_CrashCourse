@@ -2,9 +2,6 @@
  * Created by Furvent on 18/04/2017.
  */
 function initGraphics() {
-    carPic = document.createElement("img");
-    trackPicRoad = document.createElement("img");
-    trackPicWall = document.createElement("img");
     loadImages();
 }
 
@@ -28,11 +25,25 @@ function drawTrack() {
             var trackLeftEdgeX = eachCol * TRACK_W;
             var trackTopEdgeY = eachRow * TRACK_H;
 
-            if (isWallAtTileCoord(eachCol, eachRow)) {
-                canvasContext.drawImage(trackPicWall, trackLeftEdgeX, trackTopEdgeY)
-            } else {
-                canvasContext.drawImage(trackPicRoad, trackLeftEdgeX, trackTopEdgeY)
+            var trackIndex = trackTileToIndex(eachCol, eachRow);
+            var trackTypeHere = trackGrid[trackIndex];
+            var useImg;
+
+            switch (trackTypeHere) {
+                case TRACK_ROAD:
+                    useImg = trackPicRoad;
+                    break;
+                case TRACK_WALL:
+                    useImg = trackPicWall;
+                    break;
+                case TRACK_GOAL:
+                    useImg = trackPicGoal;
+                    break;
+                default:
+                    useImg = trackPicRoad;
+                    break;
             }
+            canvasContext.drawImage(useImg, trackLeftEdgeX, trackTopEdgeY);
         }
     }
 }

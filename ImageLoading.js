@@ -2,40 +2,24 @@
  * Created by Furvent on 18/04/2017.
  */
 var picsToLoad = 0;
+var trackPics = [];
 
 var carPic;
 var trackPicRoad;
 var trackPicWall;
-
-function countLoadedImageAndLaunchIfReady() {
-    picsToLoad--;
-    console.log(picsToLoad);
-    if (picsToLoad <= 0) {
-        loadingDoneSoStartGame();
-    }
-}
-
-/*function loadImages() {
-    carPic.onload = countLoadedImageAndLaunchIfReady;
-    carPic.src = "car_red.png";
-
-    trackPicRoad.onload = countLoadedImageAndLaunchIfReady;
-    trackPicRoad.src = "road.png";
-
-    trackPicWall.onload = countLoadedImageAndLaunchIfReady;
-    trackPicWall.src = "wall.png";
-}
-
-function beginLoadingImage(imgVar, fileName) {
-    imgVar.onload = countLoadedImageAndLaunchIfReady();
-    imgVar.src = fileName;
-}*/
+var trackPicGoal;
 
 function loadImages() {
+    carPic = document.createElement("img");
+    trackPicRoad = document.createElement("img");
+    trackPicWall = document.createElement("img");
+    trackPicGoal = document.createElement("img");
+
     var imageList = [
         {varName: carPic, theFile: "car_red.png"},
         {varName: trackPicRoad, theFile: "road.png"},
-        {varName: trackPicWall, theFile: "wall.png"}
+        {varName: trackPicWall, theFile: "wall.png"},
+        {varName: trackPicGoal, theFile: "goal.png"}
     ];
 
     picsToLoad = imageList.length;
@@ -48,3 +32,11 @@ function loadImages() {
  imgVar.onload = countLoadedImageAndLaunchIfReady();
  imgVar.src ="images/" + fileName;
  }
+
+function countLoadedImageAndLaunchIfReady() {
+    picsToLoad--;
+    console.log(picsToLoad);
+    if (picsToLoad <= 0) {
+        loadingDoneSoStartGame();
+    }
+}
