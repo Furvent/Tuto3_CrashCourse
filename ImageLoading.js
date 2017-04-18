@@ -14,7 +14,7 @@ function countLoadedImageAndLaunchIfReady() {
     }
 }
 
-function loadImages() {
+/*function loadImages() {
     carPic.onload = countLoadedImageAndLaunchIfReady;
     carPic.src = "car_red.png";
 
@@ -24,3 +24,19 @@ function loadImages() {
     trackPicWall.onload = countLoadedImageAndLaunchIfReady;
     trackPicWall.src = "wall.png";
 }
+
+function beginLoadingImage(imgVar, fileName) {
+    imgVar.onload = countLoadedImageAndLaunchIfReady();
+    imgVar.src = fileName;
+}*/
+
+function loadImages() {
+ beginLoadingImage(carPic, "car_red.png");
+ beginLoadingImage(trackPicWall, "wall.png");
+ beginLoadingImage(trackPicRoad, "road.png");
+ }
+
+ function beginLoadingImage(imgVar, fileName) {
+ imgVar.onload = countLoadedImageAndLaunchIfReady();
+ imgVar.src ="images/" + fileName;
+ }

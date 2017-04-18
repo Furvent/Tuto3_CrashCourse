@@ -3,10 +3,9 @@
  */
 function initGraphics() {
     carPic = document.createElement("img");
-    carPic.onload = function() {
-        carPicLoaded = true;
-    };
-    carPic.src = 'car_red.png';
+    trackPicRoad = document.createElement("img");
+    trackPicWall = document.createElement("img");
+    loadImages();
 }
 
 function drawBgd() {
