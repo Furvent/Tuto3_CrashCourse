@@ -1,5 +1,6 @@
 var canvas;
 var canvasContext;
+var FRAMES_PER_SECOND = 60;
 
 window.onload = function()
 {
@@ -7,26 +8,27 @@ window.onload = function()
     canvasContext = canvas.getContext('2d');
 
     // INIT //
-    initGraphics();
-    initInput();
     initTrack();
     initCar();
+    initGraphics();
+    initInput();
+    loadImages();
+};
 
-    var framesPerSecond = 60;
+function loadingDoneSoStartGame() {
     setInterval(function() {
         if (!isPause) {
             moveEverything();
             drawEverything();
         }
-    }, 1000/framesPerSecond);
-};
+    }, 1000/FRAMES_PER_SECOND);
+}
 
 function moveEverything() {
     moveCar();
 }
 
 function drawEverything() {
-    drawBgd();
     drawTrack();
     drawCar();
 }

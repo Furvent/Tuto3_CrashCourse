@@ -1,9 +1,6 @@
 /**
  * Created by Furvent on 18/04/2017.
  */
-var carPic;
-var carPicLoaded = false;
-
 function initGraphics() {
     carPic = document.createElement("img");
     carPic.onload = function() {
@@ -17,9 +14,7 @@ function drawBgd() {
     canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 }
 function drawCar() {
-    if (carPicLoaded) {
-        drawBitmapCenteredAtLocationWithRotation(carPic, carX, carY, carAng);
-    }
+    drawBitmapCenteredAtLocationWithRotation(carPic, carX, carY, carAng);
 }
 function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle) {
     canvasContext.save();
@@ -31,15 +26,14 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle) 
 function drawTrack() {
     for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
+            var trackLeftEdgeX = eachCol * TRACK_W;
+            var trackTopEdgeY = eachRow * TRACK_H;
+
             if (isWallAtTileCoord(eachCol, eachRow)) {
-                var brickLeftEdgeX = eachCol * TRACK_W;
-                var brickTopEdgeY = eachRow * TRACK_H;
-                drawBrick(brickLeftEdgeX, brickTopEdgeY);
+                canvasContext.drawImage(trackPicWall, trackLeftEdgeX, trackTopEdgeY)
+            } else {
+                canvasContext.drawImage(trackPicRoad, trackLeftEdgeX, trackTopEdgeY)
             }
         }
     }
-}
-function drawBrick(x, y) {
-    canvasContext.fillStyle = 'blue';
-    canvasContext.fillRect(x, y, TRACK_W - TRACK_GAP, TRACK_H - TRACK_GAP);
 }

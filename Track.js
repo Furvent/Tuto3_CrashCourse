@@ -1,7 +1,7 @@
 /**
  * Created by Furvent on 18/04/2017.
  */
-const TRACK_W = 40, TRACK_H = 40, TRACK_GAP = 2,
+const TRACK_W = 40, TRACK_H = 40,
     TRACK_COLS = 20, TRACK_ROWS = 15;
 var trackGrid;
 const TRACK_ROAD = 0, TRACK_WALL = 1, TRACK_PLAYER = 2;
