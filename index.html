@@ -17,6 +17,8 @@
     var carX = 0, carY = 0;
     var carSpeed;
     var carAng = 0;
+    const GROUNDSPEED_DECAY_MULT = 0.94, DRIVE_POWER = 0.1, REVERSE_POWER = 0.05, TURN_RATE = 0.03,
+          MIN_TURN_SPEED = 0.2;
 
     // IMG
     var carPic;
@@ -87,34 +89,26 @@
     // KEYS //
     function keyPressed(evt) {
         document.getElementById("debugText").innerHTML = "KeyCode pushed: " + evt.keyCode;
-        if (evt.keyCode === KEY_UP_Z) {
-            keyHeld_Gas = true;
-        }
-        if (evt.keyCode === KEY_DOWN_S) {
-            keyHeld_Reverse = true;
-        }
-        if (evt.keyCode === KEY_LEFT_Q) {
-            keyHeld_TurnLeft = true;
-        }
-        if (evt.keyCode === KEY_RIGHT_D) {
-            keyHeld_TurnRight = true;
-        }
+        setKeyHoldState(evt.keyCode, true);
         evt.preventDefault(); // Empêche la page du navigateur de réagir aux input (éviter le scrolling par exemple).
     }
 
     function keyReleased(evt) {
         document.getElementById("debugText").innerHTML = "KeyCode released: " + evt.keyCode;
-        if (evt.keyCode === KEY_UP_Z) {
-            keyHeld_Gas = false;
+        setKeyHoldState(evt.keyCode, false);
+    }
+    function setKeyHoldState(thisKey, setTo) {
+        if (thisKey === KEY_UP_Z) {
+            keyHeld_Gas = setTo;
         }
-        if (evt.keyCode === KEY_DOWN_S) {
-            keyHeld_Reverse = false;
+        if (thisKey === KEY_DOWN_S) {
+            keyHeld_Reverse = setTo;
         }
-        if (evt.keyCode === KEY_LEFT_Q) {
-            keyHeld_TurnLeft = false;
+        if (thisKey === KEY_LEFT_Q) {
+            keyHeld_TurnLeft = setTo;
         }
-        if (evt.keyCode === KEY_RIGHT_D) {
-            keyHeld_TurnRight = false;
+        if (thisKey === KEY_RIGHT_D) {
+            keyHeld_TurnRight = setTo;
         }
     }
     // TRACK //
@@ -133,16 +127,18 @@
     // MOVE //
     function moveCar() {
         if (keyHeld_Gas) {
-            carSpeed += 0.1;
+            carSpeed += DRIVE_POWER;
         }
         if (keyHeld_Reverse) {
-            carSpeed -= 0.2;
+            carSpeed -= REVERSE_POWER;
         }
-        if (keyHeld_TurnLeft) {
-            carAng += -0.03 * Math.PI;
-        }
-        if (keyHeld_TurnRight) {
-            carAng += 0.03 * Math.PI;
+        if (Math.abs(carSpeed) >= MIN_TURN_SPEED) {
+            if (keyHeld_TurnLeft) {
+                carAng += -TURN_RATE * Math.PI;
+            }
+            if (keyHeld_TurnRight) {
+                carAng += TURN_RATE * Math.PI;
+            }
         }
 
         carX += Math.cos(carAng) * carSpeed;
