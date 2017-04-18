@@ -27,23 +27,8 @@ function drawTrack() {
 
             var trackIndex = trackTileToIndex(eachCol, eachRow);
             var trackTypeHere = trackGrid[trackIndex];
-            var useImg;
 
-            switch (trackTypeHere) {
-                case TRACK_ROAD:
-                    useImg = trackPicRoad;
-                    break;
-                case TRACK_WALL:
-                    useImg = trackPicWall;
-                    break;
-                case TRACK_GOAL:
-                    useImg = trackPicGoal;
-                    break;
-                default:
-                    useImg = trackPicRoad;
-                    break;
-            }
-            canvasContext.drawImage(useImg, trackLeftEdgeX, trackTopEdgeY);
+            canvasContext.drawImage(trackPics[trackTypeHere], trackLeftEdgeX, trackTopEdgeY);
         }
     }
 }
