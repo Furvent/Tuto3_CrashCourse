@@ -20,15 +20,18 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle) 
     canvasContext.restore();
 }
 function drawTrack() {
-    for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
-        for (var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
-            var trackLeftEdgeX = eachCol * TRACK_W;
-            var trackTopEdgeY = eachRow * TRACK_H;
-
-            var trackIndex = trackTileToIndex(eachCol, eachRow);
-            var trackTypeHere = trackGrid[trackIndex];
-
+    var trackIndex = 0;
+    var trackLeftEdgeX = 0;
+    var trackTopEdgeY = 0;
+    for (var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) { // Ligne après ligne,
+        trackLeftEdgeX = 0; // La position horizontale est réinitialisée pour le bord gauche.
+        for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) { // De gauche à droite à chaque ligne.
+            var trackTypeHere = trackGrid[trackIndex]; // Getting track code here
             canvasContext.drawImage(trackPics[trackTypeHere], trackLeftEdgeX, trackTopEdgeY);
+
+            trackIndex++;
+            trackLeftEdgeX += TRACK_W;
         }
+        trackTopEdgeY += TRACK_H;
     }
 }
