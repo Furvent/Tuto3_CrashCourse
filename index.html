@@ -17,7 +17,7 @@
     var carX = 0, carY = 0;
     var carSpeed;
     var carAng = 0;
-    const GROUNDSPEED_DECAY_MULT = 0.94, DRIVE_POWER = 0.1, REVERSE_POWER = 0.05, TURN_RATE = 0.03,
+    const GROUNDSPEED_DECAY_MULT = 0.97, DRIVE_POWER = 0.1, REVERSE_POWER = 0.05, TURN_RATE = 0.03,
           MIN_TURN_SPEED = 0.2;
 
     // IMG
@@ -402,16 +402,28 @@
         }
     }
     // TRACK //
+    function checkForTrackAtPixelCoord(pixelX, pixelY) {
+        var tileCol = Math.floor(pixelX / TRACK_W);
+        var tileRow = Math.floor(pixelY / TRACK_H);
+        
+        if (tileCol < 0 || tileCol >= TRACK_COLS ||
+            tileRow < 0 || tileRow >= TRACK_ROWS) {
+            return false;
+        }
+
+        var trackIndex = trackTileToIndex(tileCol, tileRow);
+        return (trackGrid[trackIndex] === TRACK_ROAD);
+    }
     // TRACK.BRICK //
-    function isBrickAtTileCoord(brickTileCol, brickTileRow) {
-        var brickIndex = brickTileToIndex(brickTileCol, brickTileRow);
-        if (trackGrid[brickIndex] === 1) {
+    function isWallAtTileCoord(brickTileCol, brickTileRow) {
+        var brickIndex = trackTileToIndex(brickTileCol, brickTileRow);
+        if (trackGrid[brickIndex] === TRACK_WALL) {
             return true;
         } else {
             return false;
         }
     }
-    function brickTileToIndex(col, row) {
+    function trackTileToIndex(col, row) {
         return col + TRACK_COLS * row;
     }
     // MOVE //
@@ -431,8 +443,15 @@
             }
         }
 
-        carX += Math.cos(carAng) * carSpeed;
-        carY += Math.sin(carAng) * carSpeed;
+        var nextX = carX + Math.cos(carAng) * carSpeed;
+        var nextY = carY + Math.sin(carAng) * carSpeed;
+        if (checkForTrackAtPixelCoord(nextX, nextY)) {
+            carX = nextX;
+            carY = nextY;
+        } else {
+            carSpeed = -1;
+        }
+        carSpeed *= GROUNDSPEED_DECAY_MULT;
     }
     function resetCar() {
         for (var i = 0; i < trackGrid.length; i++) {
@@ -473,7 +492,7 @@
     function drawTrack() {
         for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
             for (var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
-                if (isBrickAtTileCoord(eachCol, eachRow)) {
+                if (isWallAtTileCoord(eachCol, eachRow)) {
                     var brickLeftEdgeX = eachCol * TRACK_W;
                     var brickTopEdgeY = eachRow * TRACK_H;
                     drawBrick(brickLeftEdgeX, brickTopEdgeY);
