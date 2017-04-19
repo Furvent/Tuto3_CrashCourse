@@ -3,14 +3,29 @@
  */
 const GROUNDSPEED_DECAY_MULT = 0.97, DRIVE_POWER = 0.1, REVERSE_POWER = 0.05, TURN_RATE = 0.03,
       MIN_TURN_SPEED = 0.2;
+var carIndex = 0;
 
 function carClass()
 {
     this.carX = 0, this.carY = 0;
     this.carSpeed = 0, this.carAng = 0;
+    this.keyHeld_Gas = false, this.keyHeld_Reverse = false,
+    this.keyHeld_TurnLeft = false, this.keyHeld_TurnRight = false;
+    
+    this.setupControls = function (forwardKey, backKey, leftKey, rightKey) {
+        this.controlKeyForGas = forwardKey;
+        this.controlKeyForReverse = backKey;
+        this.controlKeyForTurnLeft = leftKey;
+        this.controlKeyForTurnRight = rightKey;
+    }
 
-    this.carInit = function() {
+    this.carInit = function(whichGraphic) {
+        this.myBitmap = whichGraphic;
+        carIndex++;
         this.resetCar();
+        console.log("Car number : " + carIndex + " was instantiate");
+        console.log("Position is : " + this.carX + "/" + this.carY);
+        console.log("----------");
     }
     
     this.resetCar = function () {
@@ -27,6 +42,10 @@ function carClass()
                 document.getElementById('debugText').innerHTML =
                     "Car starting at tile : (" + tileCol + ", " + tileRow +") " +
                     "Pixel coordinate: (" + this.carX + ", " + this.carY + ")";
+                console.log("Car number : " + carIndex + " was positionned");
+                console.log("Position is : " + this.carX + "/" + this.carY);
+                console.log("----------");
+
                 break;
             }
         }
@@ -34,17 +53,17 @@ function carClass()
     }
 
     this.moveCar = function () {
-        if (keyHeld_Gas) {
+        if (this.keyHeld_Gas) {
             this.carSpeed += DRIVE_POWER;
         }
-        if (keyHeld_Reverse) {
+        if (this.keyHeld_Reverse) {
             this.carSpeed -= REVERSE_POWER;
         }
         if (Math.abs(this.carSpeed) >= MIN_TURN_SPEED) {
-            if (keyHeld_TurnLeft) {
+            if (this.keyHeld_TurnLeft) {
                 this.carAng += -TURN_RATE * Math.PI;
             }
-            if (keyHeld_TurnRight) {
+            if (this.keyHeld_TurnRight) {
                 this.carAng += TURN_RATE * Math.PI;
             }
         }
@@ -61,7 +80,7 @@ function carClass()
     }
 
     this.drawCar = function () {
-        drawBitmapCenteredAtLocationWithRotation(carPic, this.carX, this.carY, this.carAng);
+        drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.carX, this.carY, this.carAng);
     }
 
 }

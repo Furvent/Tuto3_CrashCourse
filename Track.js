@@ -171,8 +171,8 @@ function initTrack() {
             0,
             1,
             1,
-            0,
-            2,
+            2, // car 1
+            2, // car 1
             1,
             0,
             0,
