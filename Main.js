@@ -1,6 +1,7 @@
 var canvas;
 var canvasContext;
 var FRAMES_PER_SECOND = 60;
+var p1 = new carClass();
 
 window.onload = function()
 {
@@ -9,7 +10,7 @@ window.onload = function()
 
     // INIT //
     initTrack();
-    initCar();
+    p1.carInit();
     initGraphics();
     initInput();
 };
@@ -24,10 +25,10 @@ function loadingDoneSoStartGame() {
 }
 
 function moveEverything() {
-    moveCar();
+    p1.moveCar();
 }
 
 function drawEverything() {
     drawTrack();
-    drawCar();
+    p1.drawCar();
 }

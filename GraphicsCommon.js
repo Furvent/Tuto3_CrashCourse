@@ -9,9 +9,6 @@ function drawBgd() {
     canvasContext.fillStyle = 'black';
     canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 }
-function drawCar() {
-    drawBitmapCenteredAtLocationWithRotation(carPic, carX, carY, carAng);
-}
 function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle) {
     canvasContext.save();
     canvasContext.translate(atX, atY);
