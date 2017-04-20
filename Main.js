@@ -12,8 +12,8 @@ window.onload = function()
 
     // INIT //
     initTrack();
-    p1.carInit(carPic);
-    p2.carInit(car2Pic);
+    p1.carInit(carPic, "Red car");
+    p2.carInit(car2Pic, "Blue car");
     initGraphics();
     initInput();
 };

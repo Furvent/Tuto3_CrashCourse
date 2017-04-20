@@ -312,17 +312,17 @@ function initTrack() {
             1];
 }
 
-function checkForTrackAtPixelCoord(pixelX, pixelY) {
+function getTrackAtPixelCoord(pixelX, pixelY) {
     var tileCol = Math.floor(pixelX / TRACK_W);
     var tileRow = Math.floor(pixelY / TRACK_H);
 
     if (tileCol < 0 || tileCol >= TRACK_COLS ||
         tileRow < 0 || tileRow >= TRACK_ROWS) {
-        return false;
+        return TRACK_WALL;
     }
 
     var trackIndex = trackTileToIndex(tileCol, tileRow);
-    return (trackGrid[trackIndex] === TRACK_ROAD);
+    return trackGrid[trackIndex];
 }
 
 function isWallAtTileCoord(brickTileCol, brickTileRow) {

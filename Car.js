@@ -19,37 +19,43 @@ function carClass()
         this.controlKeyForTurnRight = rightKey;
     }
 
-    this.carInit = function(whichGraphic) {
+    this.carInit = function(whichGraphic, whichName) {
         this.myBitmap = whichGraphic;
-        carIndex++;
+        this.myName = whichName;
+        //carIndex++;
         this.resetCar();
-        console.log("Car number : " + carIndex + " was instantiate");
-        console.log("Position is : " + this.carX + "/" + this.carY);
-        console.log("----------");
+        // console.log("Car number : " + carIndex + " was instantiate");
+        // console.log("Position is : " + this.carX + "/" + this.carY);
+        // console.log("----------");
     }
     
     this.resetCar = function () {
-        for (var i = 0; i < trackGrid.length; i++) {
-            if (trackGrid[i] === TRACK_PLAYER) {
-                var tileRow = Math.floor(i / TRACK_COLS);
-                var tileCol = i%TRACK_COLS;
-                this.carX = tileCol * TRACK_W + 0.5 * TRACK_W;
-                this.carY = tileRow * TRACK_H + 0.5 * TRACK_H;
-                this.carAng = -0.5 * Math.PI; // Pointe vers le Nord.
+        this.carSpeed = 0;
+        this.carAng = -0.5 * Math.PI;
+        if (this.homeX === undefined) {
+            for (var i = 0; i < trackGrid.length; i++) {
+                if (trackGrid[i] === TRACK_PLAYER) {
+                    var tileRow = Math.floor(i / TRACK_COLS);
+                    var tileCol = i%TRACK_COLS;
 
-                trackGrid[i] = TRACK_ROAD;
+                    this.homeX = tileCol * TRACK_W + 0.5 * TRACK_W;
+                    this.homeY = tileRow * TRACK_H + 0.5 * TRACK_H;
+                    this.carAng = -0.5 * Math.PI; // Pointe vers le Nord.
+                    trackGrid[i] = TRACK_ROAD;
 
-                document.getElementById('debugText').innerHTML =
-                    "Car starting at tile : (" + tileCol + ", " + tileRow +") " +
-                    "Pixel coordinate: (" + this.carX + ", " + this.carY + ")";
-                console.log("Car number : " + carIndex + " was positionned");
-                console.log("Position is : " + this.carX + "/" + this.carY);
-                console.log("----------");
+                    // document.getElementById('debugText').innerHTML =
+                    //     "Car starting at tile : (" + tileCol + ", " + tileRow +") " +
+                    //     "Pixel coordinate: (" + this.carX + ", " + this.carY + ")";
+                    // console.log("Car number : " + carIndex + " was positionned");
+                    // console.log("Position is : " + this.carX + "/" + this.carY);
+                    // console.log("----------");
 
-                break;
+                    break;
+                }
             }
         }
-        this.carSpeed = 0;
+        this.carX = this.homeX;
+        this.carY = this.homeY;
     }
 
     this.moveCar = function () {
@@ -70,9 +76,16 @@ function carClass()
 
         var nextX = this.carX + Math.cos(this.carAng) * this.carSpeed;
         var nextY = this.carY + Math.sin(this.carAng) * this.carSpeed;
-        if (checkForTrackAtPixelCoord(nextX, nextY)) {
+
+        var drivingIntoTileType = getTrackAtPixelCoord(nextX, nextY);
+        if (drivingIntoTileType === TRACK_ROAD) {
             this.carX = nextX;
             this.carY = nextY;
+        } else if (drivingIntoTileType === TRACK_GOAL){
+            console.log("BLURP");
+            document.getElementById("debugText").innerHTML = this.myName + " won the race !";
+            p1.resetCar();
+            p2.resetCar();
         } else {
             this.carSpeed = -1;
         }
